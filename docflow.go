@@ -4,16 +4,17 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"github.com/muesli/reflow"
 	"go/ast"
-	"golang.org/x/tools/go/analysis"
 	"strings"
+
+	"github.com/muesli/reflow"
+	"golang.org/x/tools/go/analysis"
 )
 
 var Analyzer = &analysis.Analyzer{
 	Name: "docflow",
 	Doc: "docflow checks max line length of godoc sentence comments. " +
-		"Supports fixing with -fix flag (requires subsequent go fmt in some cases).",
+		"It supports fixing with -fix flag (requires subsequent go fmt in some cases).",
 	Run: run,
 }
 
@@ -32,27 +33,26 @@ func run(p *analysis.Pass) (interface{}, error) {
 			if !flowed {
 				continue
 			}
-			
+
 			pos := p.Fset.Position(group.Pos())
 			indent := strings.Repeat("\t", pos.Column-1)
 			var buf bytes.Buffer
 			for i, line := range text {
 				tabs := indent
+				prefix := "//"
 				if i == 0 {
 					tabs = ""
+					prefix = "/" // Workaround for fixes on pos 0.
 				}
-				prefix := "// "
-				if isDirective(line) {
-					prefix = "//"
+				if !isDirective(line) {
+					prefix += " "
 				}
 				suffix := "\n"
-				if len(text) == i +1 {
+				if len(text) == i+1 {
 					suffix = ""
 				}
 				buf.WriteString(tabs + prefix + line + suffix)
 			}
-			
-			group.Pos()
 
 			p.Report(analysis.Diagnostic{
 				Pos:     group.Pos(),
@@ -61,7 +61,7 @@ func run(p *analysis.Pass) (interface{}, error) {
 				SuggestedFixes: []analysis.SuggestedFix{{
 					Message: "Reflow",
 					TextEdits: []analysis.TextEdit{{
-						Pos:     group.Pos(),
+						Pos:     group.Pos() + 1, // Workaround for fixes on pos 0.
 						End:     group.End(),
 						NewText: buf.Bytes(),
 					}},
@@ -103,11 +103,11 @@ func flowGroup(group []string, limit int) ([]string, bool) {
 	var (
 		flowed    bool
 		lines     []string
-	 block        []string
+		block     []string
 		blockType int
 	)
 
-	flushBlock := func(block []string, typ int){
+	flushBlock := func(block []string, typ int) {
 		if typ == normal {
 			// Maybe flow normal block
 			var ok bool
@@ -119,7 +119,7 @@ func flowGroup(group []string, limit int) ([]string, bool) {
 		lines = append(lines, block...)
 	}
 
-	for _, line:= range group {
+	for _, line := range group {
 		var typ int
 		if line == "" {
 			typ = empty

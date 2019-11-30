@@ -11,12 +11,11 @@ go get github.com/corverroos/docflow/...
 # This installs the docflow binary to $GOPATH/bin/docflow
 ```
 
-
-Given a comment in a file `doc.go`
+Given a file `doc.go`
 ```
 // Package foo is a great package but writing comments in golang can be frustrating
 // since editing long comments
-// requires manual wrapping and alignement which is tedious and wastes time that could be spent elsewhere.
+// requires manual wrapping and alignment which is tedious and wastes time that could be spent elsewhere.
 package foo
 ```
 
@@ -26,6 +25,12 @@ docflow -fix path/to/doc.go
 ```
 
 Results in:
+```
+// Package foo is a great package but writing comments in golang can be frustrating
+// since editing long comments requires manual wrapping and alignment which is
+// tedious and wastes time that could be spent elsewhere.
+package foo
+```
 
 
 

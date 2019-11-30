@@ -1,3 +1,6 @@
+// Package a is a great package but writing comments in golang can be frustrating // want "Comment exceeds 40 character limit"
+// since editing long comments
+// requires manual wrapping and alignment which is tedious and wastes time that could be spent elsewhere.
 package a
 
 import "fmt"
@@ -8,7 +11,7 @@ import "fmt"
 and I'm not sure when people actually use them*/
 
 // Exported is an exported function with a long godoc comment. // want "Comment exceeds 40 character limit"
-func Exported(/* sneak comment to be ignored since it is starred */) {
+func Exported( /* sneak comment to be ignored since it is starred */ ) {
 	var i int
 
 	// This is a short comment
