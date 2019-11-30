@@ -7,8 +7,8 @@ It power lies in the fact that it can automatically fix it using the library [re
 
 Install the `docflow` standalone tool.
 ```
-go get github.com/corverroos/docflow/...
 # This installs the docflow binary to $GOPATH/bin/docflow
+go get github.com/corverroos/docflow/...
 ```
 
 Given a file `doc.go`
@@ -31,7 +31,3 @@ Results in:
 // tedious and wastes time that could be spent elsewhere.
 package foo
 ```
-
-
-
-
