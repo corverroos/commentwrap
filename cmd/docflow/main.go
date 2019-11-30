@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/corverroos/docfmt"
+	"github.com/corverroos/docflow"
 	"golang.org/x/tools/go/analysis/singlechecker"
 )
 
