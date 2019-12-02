@@ -1,4 +1,4 @@
-package docflow
+package commentwrap
 
 import (
 	"bytes"
@@ -12,9 +12,9 @@ import (
 )
 
 var Analyzer = &analysis.Analyzer{
-	Name: "docflow",
-	Doc: "docflow checks max line length of godoc sentence comments. " +
-		"It supports fixing with -fix flag (requires subsequent go fmt in some cases).",
+	Name: "commentwrap",
+	Doc: "commentwrap checks max line length of comment paragraphs. " +
+		"It supports auto wrapping with -fix flag.",
 	Run: run,
 }
 
@@ -99,6 +99,7 @@ func flowGroup(group []string, limit int) ([]string, bool) {
 		indented  = 1
 		empty     = 2
 		directive = 3
+		note = 4
 	)
 	var (
 		flowed    bool
@@ -127,6 +128,8 @@ func flowGroup(group []string, limit int) ([]string, bool) {
 			typ = directive
 		} else if line[0] == ' ' || line[0] == '\t' {
 			typ = indented
+		}else if isNote(line) {
+			typ = note
 		} else {
 			typ = normal
 		}
@@ -147,7 +150,19 @@ func flowGroup(group []string, limit int) ([]string, bool) {
 // isDirective returns true if the unescaped comment is a go directive.
 // See https://golang.org/cmd/compile/#hdr-Compiler_Directives.
 func isDirective(line string) bool {
-	return strings.HasPrefix(line, "go:")
+	return strings.HasPrefix(line, "go:") || strings.HasPrefix(line, "line:")
+}
+
+var notes = []string{"TODO", "BUG", "FIXME", "OPTIMIZE"}
+
+// isNote returns true if the unescaped comment is a note: TODO, BUG, FIXME, OPTIMIZE.
+func isNote(line string) bool {
+	for _, note := range notes {
+		if strings.HasPrefix(line, note) {
+			return true
+		}
+	}
+	return false
 }
 
 // flowBlock will "reflow" the whole block if any line is longer than limit

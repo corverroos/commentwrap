@@ -1,33 +1,46 @@
-# docflow
+# commentwrap
 
-docflow is a golang [analysis](https://godoc.org/golang.org/x/tools/go/analysis) providing a simple check for comments exceeding the max line limit (default 80 chars). 
-It power lies in the fact that it can automatically fix it using the library [reflow](https://github.com/muesli/reflow).
+Commentwrap is a golang [analysis](https://godoc.org/golang.org/x/tools/go/analysis) providing a check for comments exceeding the max line limit (default 80 chars). 
+Its power lies in the fact that it can automatically fix it using the library [reflow](https://github.com/muesli/reflow).
 
 ## TL;DR
 
-Install the `docflow` standalone tool.
+Install the `commentwrap` binary.
 ```
-# This installs the docflow binary to $GOPATH/bin/docflow
-go get github.com/corverroos/docflow/...
+go get github.com/corverroos/commentwrap/...
 ```
 
 Given a file `doc.go`
 ```
-// Package foo is a great package but writing comments in golang can be frustrating
-// since editing long comments
-// requires manual wrapping and alignment which is tedious and wastes time that could be spent elsewhere.
-package foo
+// Lorem ipsum dolor sit amet, 
+// cum ea propriae lobortis reprimique, sed dolorum cotidieque ne, quo ad esse error. 
+// Tempor petentium ad per, in alii detracto reprehendunt 
+// mei, utamur vivendo vim ut.
+//   fmt.Println("Code blocks are not wrapped")
+package lipsum
 ```
 
 Run the analysis with `-fix` flag.
 ```
-docflow -fix path/to/doc.go
+$GOPATH/bin/commentwrap -fix path/to/doc.go
 ```
 
 Results in:
 ```
-// Package foo is a great package but writing comments in golang can be frustrating
-// since editing long comments requires manual wrapping and alignment which is
-// tedious and wastes time that could be spent elsewhere.
-package foo
+// Lorem ipsum dolor sit amet, cum ea propriae lobortis reprimique, sed dolorum
+// cotidieque ne, quo ad esse error. Tempor petentium ad per, in alii detracto
+// reprehendunt mei, utamur vivendo vim ut.
+//   fmt.Println("Code blocks are not wrapped")
+package lipsum
 ```
+
+# Rules
+
+- This analysis is aimed at formatting multi-line comment paragraphs.
+- It is triggered by a single line in a paragraph exceeding the character limit (defaults to 80).
+- Paragraphs where no lines exceed the limit are ignored.
+- Comment blocks using `/* ... */` are not supported.
+- It aims to support [godoc](https://blog.golang.org/godoc-documenting-go-code) and other golang comment artifacts:
+  - Pre-formatted code (indented lines) are ignored.
+  - [Directives](https://golang.org/cmd/compile/#hdr-Compiler_Directives) are ignored; `//go:generate`.
+  - Notes are ignored; `//TODO`, `//BUG`, `//FIXME`.

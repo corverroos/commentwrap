@@ -1,4 +1,4 @@
-package docflow
+package commentwrap
 
 import (
 	"github.com/stretchr/testify/require"
@@ -25,52 +25,58 @@ func TestFlowGroup(t *testing.T) {
 		Flowed bool
 	}{
 		{
-			Name: "single long line",
+			Name: "long",
 			Input: "This is a single long line",
 			Limit: 10,
 			Output:"This is a\nsingle\nlong line",
 			Flowed: true,
 		},{
-			Name: "multi short line",
+			Name: "multi-short",
 			Input: "This \nis a\n multi \nlong line",
 			Limit: 10,
 			Output:"This \nis a\n multi \nlong line",
 			Flowed: false,
 		},{
-			Name: "single long sentence with short sentence",
+			Name: "lone blank code",
 			Input: "This is a single long line\n\nThis is ok",
 			Limit: 10,
 			Output:"This is a\nsingle\nlong line\n\nThis is ok",
 			Flowed: true,
 		},{
-			Name: "single long sentence with short sentence",
+			Name: "long-code",
 			Input: "This is a single long line\n Code block ignore",
 			Limit: 10,
 			Output:"This is a\nsingle\nlong line\n Code block ignore",
 			Flowed: true,
 		},{
-			Name: "sandwich long, code, code, long",
+			Name: "long multi-code long",
 			Input: "This is a single long line\n Code\n block\n ignore\n\nThis is a single long line",
 			Limit: 10,
 			Output:"This is a\nsingle\nlong line\n Code\n block\n ignore\n\nThis is a\nsingle\nlong line",
 			Flowed: true,
 		},{
-			Name: "short, long code, short",
+			Name: "multi-short long-code multi-shorts",
 			Input: "This is\nshort\n Long code block ignore\n\nThis is\nshort\nagain",
 			Limit: 10,
 			Output:"This is\nshort\n Long code block ignore\n\nThis is\nshort\nagain",
 			Flowed: false,
 		},{
-			Name: "short, directive, short",
+			Name: "short directive code",
 			Input: "This is\ngo:generate all the good stuff\n Long code block ignore\n\n",
 			Limit: 10,
 			Output:"This is\ngo:generate all the good stuff\n Long code block ignore\n\n",
 			Flowed: false,
 		},{
-			Name: "short, directive, short",
+			Name: "long directive",
 			Input: "This is a long line\ngo:generate all the good stuff",
 			Limit: 10,
 			Output:"This is a\nlong line\ngo:generate all the good stuff",
+			Flowed: true,
+		},{
+			Name: "short note long",
+			Input: "Short line\nTODO(corver): No wrap\nThis is a long line",
+			Limit: 10,
+			Output:"Short line\nTODO(corver): No wrap\nThis is a\nlong line",
 			Flowed: true,
 		},
 	}

@@ -1,4 +1,4 @@
-module github.com/corverroos/docflow
+module github.com/corverroos/commentwrap
 
 go 1.13
 

@@ -1,6 +1,8 @@
-// Package a is a great package but writing comments in golang can be frustrating // want "Comment exceeds 40 character limit"
-// since editing long comments
-// requires manual wrapping and alignment which is tedious and wastes time that could be spent elsewhere.
+// Lorem ipsum dolor sit amet, 
+// cum ea propriae lobortis reprimique, sed dolorum cotidieque ne, quo ad esse error.
+// Tempor petentium ad per, in alii detracto reprehendunt
+// mei, utamur vivendo vim ut.
+//   fmt.Println("Code blocks are not wrapped")
 package a
 
 import "fmt"
