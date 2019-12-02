@@ -36,6 +36,7 @@ package lipsum
 
 # Notes
 
+- As an analysis, its usage it the same as `go vet`. See this great [video](https://www.youtube.com/watch?v=10IMWTpCSIQ) on writing a go analysis.
 - This analysis is aimed at formatting multi-line comment paragraphs.
 - It is triggered by a single line in a paragraph exceeding the character limit (defaults to 80).
 - Paragraphs where no lines exceed the limit are ignored.
