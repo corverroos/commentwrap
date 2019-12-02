@@ -34,7 +34,7 @@ Results in:
 package lipsum
 ```
 
-# Rules
+# Notes
 
 - This analysis is aimed at formatting multi-line comment paragraphs.
 - It is triggered by a single line in a paragraph exceeding the character limit (defaults to 80).
@@ -44,3 +44,4 @@ package lipsum
   - Pre-formatted code (indented lines) are ignored.
   - [Directives](https://golang.org/cmd/compile/#hdr-Compiler_Directives) are ignored; `//go:generate`.
   - Notes are ignored; `//TODO`, `//BUG`, `//FIXME`.
+- Using it as a [Goland external tool](goland.jpg) is simple.
