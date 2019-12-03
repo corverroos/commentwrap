@@ -45,4 +45,4 @@ package lipsum
   - Pre-formatted code (indented lines) are ignored.
   - [Directives](https://golang.org/cmd/compile/#hdr-Compiler_Directives) are ignored; `//go:generate`.
   - Notes are ignored; `//TODO`, `//BUG`, `//FIXME`.
-- Using it as a [Goland external tool](goland.jpg) is simple.
+- Using it as a ![Goland external tool](goland.jpg) is simple.
