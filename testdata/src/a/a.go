@@ -1,4 +1,4 @@
-// Lorem ipsum dolor sit amet, 
+// Lorem ipsum dolor sit amet,                        // want "Comment exceeds 40 character limit"
 // cum ea propriae lobortis reprimique, sed dolorum cotidieque ne, quo ad esse error.
 // Tempor petentium ad per, in alii detracto reprehendunt
 // mei, utamur vivendo vim ut.

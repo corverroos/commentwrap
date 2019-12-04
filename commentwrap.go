@@ -22,6 +22,9 @@ var limit = flag.Int("docflow_limit", 80, "docflow line length limit")
 
 func run(p *analysis.Pass) (interface{}, error) {
 	for _, file := range p.Files {
+		if isGeneratedFile(file) {
+			continue
+		}
 		for _, group := range file.Comments {
 			if !mustFlow(group, *limit) {
 				continue
@@ -99,7 +102,7 @@ func flowGroup(group []string, limit int) ([]string, bool) {
 		indented  = 1
 		empty     = 2
 		directive = 3
-		note = 4
+		note      = 4
 	)
 	var (
 		flowed    bool
@@ -128,7 +131,7 @@ func flowGroup(group []string, limit int) ([]string, bool) {
 			typ = directive
 		} else if line[0] == ' ' || line[0] == '\t' {
 			typ = indented
-		}else if isNote(line) {
+		} else if isNote(line) {
 			typ = note
 		} else {
 			typ = normal
@@ -187,4 +190,22 @@ func flowBlock(block []string, limit int) ([]string, bool) {
 		f.Write([]byte(" "))
 	}
 	return strings.Split(f.String(), "\n"), true
+}
+
+const (
+	genPrefix = "// Code generated"
+	genSuffix = "DO NOT EDIT."
+)
+
+// isGeneratedFile returns true if the file is generated
+// according to https://golang.org/s/generatedcode.
+func isGeneratedFile(file *ast.File) bool {
+	for _, c := range file.Comments {
+		for _, t := range c.List {
+			if strings.HasPrefix(t.Text, genPrefix) && strings.HasSuffix(t.Text, genSuffix) {
+				return true
+			}
+		}
+	}
+	return false
 }

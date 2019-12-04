@@ -41,6 +41,7 @@ package lipsum
 - It is triggered by a single line in a paragraph exceeding the character limit (defaults to 80).
 - Paragraphs where no lines exceed the limit are ignored.
 - Comment blocks using `/* ... */` are not supported.
+- [Generated files](https://golang.org/s/generatedcode) are ignored.
 - It aims to support [godoc](https://blog.golang.org/godoc-documenting-go-code) and other golang comment artifacts:
   - Pre-formatted code (indented lines) are ignored.
   - [Directives](https://golang.org/cmd/compile/#hdr-Compiler_Directives) are ignored; `//go:generate`.
